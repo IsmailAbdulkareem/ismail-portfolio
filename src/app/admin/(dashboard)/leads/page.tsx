@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { deleteLead } from "@/app/admin/actions/leads";
 import { Badge, LEAD_STATUS_TONE } from "@/components/admin/Badge";
+import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
 import { formatDateTime } from "@/components/admin/format";
 import { LeadStatusSelect } from "@/components/admin/leads/LeadStatusSelect";
 import { EmptyState, PageHeader } from "@/components/admin/PageHeader";
@@ -144,14 +146,21 @@ export default async function LeadsPage({
 
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] pt-3">
                 <LeadStatusSelect id={lead.id} status={lead.status} />
-                {lead.conversation_id ? (
-                  <Link
-                    href={`/admin/chats/${lead.conversation_id}`}
-                    className="text-xs text-muted transition-colors hover:text-fg"
-                  >
-                    View chat transcript →
-                  </Link>
-                ) : null}
+                <div className="flex flex-wrap items-center gap-3">
+                  {lead.conversation_id ? (
+                    <Link
+                      href={`/admin/chats/${lead.conversation_id}`}
+                      className="text-xs text-muted transition-colors hover:text-fg"
+                    >
+                      View chat transcript →
+                    </Link>
+                  ) : null}
+                  <ConfirmDeleteButton
+                    action={deleteLead}
+                    id={lead.id}
+                    confirmMessage={`Delete the lead from "${lead.name}"? This cannot be undone.`}
+                  />
+                </div>
               </div>
             </li>
           ))}

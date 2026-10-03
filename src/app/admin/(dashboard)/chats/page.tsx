@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { deleteConversation } from "@/app/admin/actions/chats";
 import { Badge } from "@/components/admin/Badge";
+import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
 import { formatDateTime } from "@/components/admin/format";
 import { EmptyState, PageHeader } from "@/components/admin/PageHeader";
 import { Table, Td, Th } from "@/components/admin/Table";
@@ -52,6 +54,9 @@ export default async function ChatsPage() {
               <Th>
                 <span className="sr-only">Open</span>
               </Th>
+              <Th>
+                <span className="sr-only">Delete</span>
+              </Th>
             </tr>
           </thead>
           <tbody>
@@ -76,6 +81,13 @@ export default async function ChatsPage() {
                     >
                       Open transcript →
                     </Link>
+                  </Td>
+                  <Td className="text-right">
+                    <ConfirmDeleteButton
+                      action={deleteConversation}
+                      id={conversation.id}
+                      confirmMessage={`Delete this conversation and all its messages? This cannot be undone.`}
+                    />
                   </Td>
                 </tr>
               );

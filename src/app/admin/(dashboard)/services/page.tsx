@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { deleteService } from "@/app/admin/actions/services";
 import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
 import { EmptyState, PageHeader } from "@/components/admin/PageHeader";
 import { ServiceForm } from "@/components/admin/services/ServiceForm";
+import { buttonClass } from "@/components/admin/button-styles";
 import { requireAdmin } from "@/lib/auth";
 import type { Service } from "@/lib/types";
 
@@ -21,7 +23,15 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <PageHeader title="Services" description="Shown on the home page and /services, in sort order." />
+      <PageHeader
+        title="Services"
+        description="Shown on the home page and /services, in sort order."
+        actions={
+          <Link href="#add-service" className={buttonClass("primary")}>
+            Add service
+          </Link>
+        }
+      />
 
       <div className="grid gap-4">
         {services.length === 0 ? <EmptyState>No services yet. Add the first one below.</EmptyState> : null}
@@ -40,7 +50,7 @@ export default async function ServicesPage() {
         ))}
       </div>
 
-      <section className="mt-10">
+      <section id="add-service" className="mt-10">
         <h2 className="mb-3 text-sm font-medium">Add service</h2>
         <ServiceForm />
       </section>

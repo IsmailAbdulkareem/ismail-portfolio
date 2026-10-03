@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { deleteConversation } from "@/app/admin/actions/chats";
 import { isUuid } from "@/app/admin/actions/form-utils";
 import { Badge, LEAD_STATUS_TONE } from "@/components/admin/Badge";
+import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
 import { formatDateTime } from "@/components/admin/format";
 import { LeadStatusSelect } from "@/components/admin/leads/LeadStatusSelect";
 import { EmptyState, PageHeader } from "@/components/admin/PageHeader";
@@ -48,6 +50,15 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
               Started {formatDateTime(conversation.started_at)} · {messages.length}{" "}
               {messages.length === 1 ? "message" : "messages"}
             </>
+          }
+          actions={
+            <ConfirmDeleteButton
+              action={deleteConversation}
+              id={conversation.id}
+              confirmMessage="Delete this conversation and all its messages? This cannot be undone."
+              label="Delete conversation"
+              size="md"
+            />
           }
         />
       </div>

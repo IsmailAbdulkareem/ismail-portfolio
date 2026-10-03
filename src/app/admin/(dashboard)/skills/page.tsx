@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   createSkill,
   createSkillGroup,
@@ -10,6 +11,7 @@ import {
 import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
 import { InlineForm, type InlineField } from "@/components/admin/InlineForm";
 import { EmptyState, PageHeader } from "@/components/admin/PageHeader";
+import { buttonClass } from "@/components/admin/button-styles";
 import { requireAdmin } from "@/lib/auth";
 import type { SkillGroup } from "@/lib/types";
 
@@ -48,7 +50,15 @@ export default async function SkillsPage() {
 
   return (
     <>
-      <PageHeader title="Skills" description="Grouped skills shown in the About section. Icons use simple-icons slugs." />
+      <PageHeader
+        title="Skills"
+        description="Grouped skills shown in the About section. Icons use simple-icons slugs."
+        actions={
+          <Link href="#add-group" className={buttonClass("primary")}>
+            Add skill group
+          </Link>
+        }
+      />
 
       <div className="grid gap-4">
         {groups.length === 0 ? <EmptyState>No skill groups yet. Add one below.</EmptyState> : null}
@@ -116,7 +126,7 @@ export default async function SkillsPage() {
         ))}
       </div>
 
-      <section className="mt-10">
+      <section id="add-group" className="mt-10">
         <h2 className="mb-3 text-sm font-medium">Add group</h2>
         <div className="rounded-xl border border-white/[0.08] bg-surface/60 p-4">
           <InlineForm

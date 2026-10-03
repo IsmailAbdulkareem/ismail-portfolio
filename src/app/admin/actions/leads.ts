@@ -27,3 +27,16 @@ export async function updateLeadStatus(_prev: FormState, formData: FormData): Pr
   revalidatePath("/admin", "layout");
   return { status: "success", message: "Updated." };
 }
+
+export async function deleteLead(_prev: FormState, formData: FormData): Promise<FormState> {
+  const { supabase } = await requireAdmin();
+
+  const id = text(formData, "id");
+  if (!isUuid(id)) return { status: "error", message: "Unknown lead." };
+
+  const { error } = await supabase.from("leads").delete().eq("id", id);
+  if (error) return { status: "error", message: `Could not delete: ${error.message}` };
+
+  revalidatePath("/admin", "layout");
+  return { status: "success", message: "Lead deleted." };
+}
